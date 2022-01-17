@@ -157,4 +157,9 @@ async def GetLeavesBetween(ctx, startdate, enddate, discorduser = None):
     await ctx.author.send(embed = embed)
     await ctx.send(content = "Done", delete_after = deletion_timer)
 
+async def coroutine():
+  async with aiohttp.ClientSession() as session:
+    webhook = Webhook.from_url('https://discord.com/api/webhooks/932556635640062023/anTT7zwZs9ftrQXByRUeZC5nBkQVw_9I9gTwr-KbLcpTnj8xiA1VQXSiZOKYE0WKBKjw/github', adapter=AsyncWebhookAdapter(session))
+    await webhook.send(content="Hello World")
+
 client.run(os.getenv("Bot_token"))
