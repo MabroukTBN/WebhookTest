@@ -12,13 +12,10 @@ from Member import member_db
 from Leave import leave_interface, leave_db
 
 load_dotenv()
-
 client = commands.Bot(command_prefix = "!", intents = discord.Intents.all())
 slash = SlashCommand(client, sync_commands = True)
-
 guild_ids = [int(os.getenv("TestServer_id"))]
 deletion_timer = float(os.getenv("Command_Deletion_Timer"))
-
 @client.event
 async def on_ready():
     DiscordComponents(client)
