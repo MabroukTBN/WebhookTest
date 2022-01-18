@@ -22,17 +22,18 @@ slash = SlashCommand(client, sync_commands = True)
 guild_ids = [int(os.getenv("TestServer_id"))]
 deletion_timer = float(os.getenv("Command_Deletion_Timer"))
 
-async def coroutine():
-  async with aiohttp.ClientSession() as session:
-    webhook = Webhook.from_url('https://discord.com/api/webhooks/932556635640062023/anTT7zwZs9ftrQXByRUeZC5nBkQVw_9I9gTwr-KbLcpTnj8xiA1VQXSiZOKYE0WKBKjw/github', adapter=AsyncWebhookAdapter(session)) # Initializing webhook with AsyncWebhookAdapter
-    print(webhook)
-    await webhook.send(username="Github Update", content="Hello World")
-
 @client.event
 async def on_ready():
     DiscordComponents(client)
     Scheduler.Setup(client)
     print("the bot is ready")
+
+@client.event
+async def coroutine():
+    async with aiohttp.ClientSession() as session:
+        webhook = Webhook.from_url('https://discord.com/api/webhooks/932556635640062023/anTT7zwZs9ftrQXByRUeZC5nBkQVw_9I9gTwr-KbLcpTnj8xiA1VQXSiZOKYE0WKBKjw/github', adapter=AsyncWebhookAdapter(session)) # Initializing webhook with AsyncWebhookAdapter
+        print(webhook)
+        await webhook.send(username="Github Update", content="Hello World")
 
 @client.event
 async def on_raw_reaction_add(payload):
