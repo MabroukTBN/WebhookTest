@@ -7,7 +7,7 @@ import Scheduler
 import UI
 
 from dotenv import load_dotenv
-from discord import Webhook, AsyncWebhookAdapter 
+from discord import Webhook, AsyncWebhookAdapter, RequestsWebhookAdapter
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_components import DiscordComponents
@@ -24,14 +24,14 @@ deletion_timer = float(os.getenv("Command_Deletion_Timer"))
 
 @client.event
 async def on_ready():
+    await coroutine()
     DiscordComponents(client)
     Scheduler.Setup(client)
     print("the bot is ready")
 
-@client.event
 async def coroutine():
     async with aiohttp.ClientSession() as session:
-        webhook = Webhook.from_url('https://discord.com/api/webhooks/932556635640062023/anTT7zwZs9ftrQXByRUeZC5nBkQVw_9I9gTwr-KbLcpTnj8xiA1VQXSiZOKYE0WKBKjw/github', adapter=AsyncWebhookAdapter(session)) # Initializing webhook with AsyncWebhookAdapter
+        webhook = Webhook.from_url('https://discord.com/api/webhooks/932556635640062023/anTT7zwZs9ftrQXByRUeZC5nBkQVw_9I9gTwr-KbLcpTnj8xiA1VQXSiZOKYE0WKBKjw', adapter=AsyncWebhookAdapter(session)) # Initializing webhook with AsyncWebhookAdapter
         print(webhook)
         await webhook.send(username="Github Update", content="Hello World")
 
