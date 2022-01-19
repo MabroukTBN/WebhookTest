@@ -7,7 +7,7 @@ import Scheduler
 import UI
 
 from dotenv import load_dotenv
-from discord import Webhook, AsyncWebhookAdapter 
+from discord import Webhook, AsyncWebhookAdapter, RequestsWebhookAdapter
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_components import DiscordComponents
