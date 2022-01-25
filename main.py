@@ -33,7 +33,7 @@ async def on_ready():
 
 @client.event
 async def on_webhooks_update(channel_):
-    webhook = Webhook.from_url('https://d676-154-177-160-127.ngrok.io', adapter=RequestsWebhookAdapter())
+    webhook = Webhook.from_url('https://discord.com/api/webhooks/935461190715445329/Dg41vE0XVaJIGIExYpV4__WFFsU8VQv6L45jFoj2GnQYkubdJehUSeTI9ChEAH3ICiZJ', adapter=RequestsWebhookAdapter())
     embed = discord.Embed(title="Hello World", description=":wave:") # Initializing an Embed
     embed.add_field(name="Field name", value="Field value") # Adding a new field
     webhook.send(embed=embed) # Executing webhook and sending embed.
