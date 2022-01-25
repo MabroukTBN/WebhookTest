@@ -7,7 +7,7 @@ import Scheduler
 import UI
 
 from dotenv import load_dotenv
-from discord import Webhook, AsyncWebhookAdapter, RequestsWebhookAdapter
+from discord import Webhook, AsyncWebhookAdapter, RequestsWebhookAdapter, File
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_components import DiscordComponents
@@ -18,22 +18,26 @@ load_dotenv()
 
 client = commands.Bot(command_prefix = "!", intents = discord.Intents.all())
 slash = SlashCommand(client, sync_commands = True)
+channel_ = client.get_channel(932556602609901568)
+
+# webhookurl = "https://discord.com/api/webhooks/935461190715445329/Dg41vE0XVaJIGIExYpV4__WFFsU8VQv6L45jFoj2GnQYkubdJehUSeTI9ChEAH3ICiZJ/github"
 
 guild_ids = [int(os.getenv("TestServer_id"))]
 deletion_timer = float(os.getenv("Command_Deletion_Timer"))
 
 @client.event
-async def on_ready():
-    await coroutine()
+async def on_ready():   
     DiscordComponents(client)
     Scheduler.Setup(client)
     print("the bot is ready")
 
-# async def coroutine():
-#     async with aiohttp.ClientSession() as session:
-#         webhook = Webhook.from_url('https://discord.com/api/webhooks/932556635640062023/anTT7zwZs9ftrQXByRUeZC5nBkQVw_9I9gTwr-KbLcpTnj8xiA1VQXSiZOKYE0WKBKjw', adapter=AsyncWebhookAdapter(session)) # Initializing webhook with AsyncWebhookAdapter
-#         print(webhook)
-#         await webhook.send(username="Github Update", content="Hello World")
+@client.event
+async def on_webhooks_update(channel_):
+    webhook = Webhook.from_url('https://d676-154-177-160-127.ngrok.io', adapter=RequestsWebhookAdapter())
+    embed = discord.Embed(title="Hello World", description=":wave:") # Initializing an Embed
+    embed.add_field(name="Field name", value="Field value") # Adding a new field
+    webhook.send(embed=embed) # Executing webhook and sending embed.
+    print("Webhook?")
 
 @client.event
 async def on_raw_reaction_add(payload):
