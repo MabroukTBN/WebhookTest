@@ -1,7 +1,7 @@
 import datetime
 import discord
 import os
-import aiohttp
+import asyncio
 import Utilities
 import Scheduler
 import UI
@@ -11,14 +11,15 @@ from discord import Webhook, AsyncWebhookAdapter, RequestsWebhookAdapter, File
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_components import DiscordComponents
+from aiohttp import web
 from Member import member_db 
 from Leave import leave_interface, leave_db
+from webhook_handler import GithubHandler
 
 load_dotenv()
 
 client = commands.Bot(command_prefix = "!", intents = discord.Intents.all())
 slash = SlashCommand(client, sync_commands = True)
-channel_ = client.get_channel(932556602609901568)
 
 # webhookurl = "https://discord.com/api/webhooks/935461190715445329/Dg41vE0XVaJIGIExYpV4__WFFsU8VQv6L45jFoj2GnQYkubdJehUSeTI9ChEAH3ICiZJ/github"
 
@@ -26,18 +27,13 @@ guild_ids = [int(os.getenv("TestServer_id"))]
 deletion_timer = float(os.getenv("Command_Deletion_Timer"))
 
 @client.event
-async def on_ready():   
+async def on_ready():
     DiscordComponents(client)
     Scheduler.Setup(client)
+    github_handler = GithubHandler(client)
+    client.add_cog(github_handler)
+    client.loop.create_task(github_handler.webserver())
     print("the bot is ready")
-
-@client.event
-async def on_webhooks_update(channel_):
-    webhook = Webhook.from_url('https://discord.com/api/webhooks/935461190715445329/Dg41vE0XVaJIGIExYpV4__WFFsU8VQv6L45jFoj2GnQYkubdJehUSeTI9ChEAH3ICiZJ', adapter=RequestsWebhookAdapter())
-    embed = discord.Embed(title="Hello World", description=":wave:") # Initializing an Embed
-    embed.add_field(name="Field name", value="Field value") # Adding a new field
-    webhook.send(embed=embed) # Executing webhook and sending embed.
-    print("Webhook?")
 
 @client.event
 async def on_raw_reaction_add(payload):
