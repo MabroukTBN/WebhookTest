@@ -14,14 +14,12 @@ from discord_components import DiscordComponents
 from aiohttp import web
 from Member import member_db 
 from Leave import leave_interface, leave_db
-from webhook_handler import GithubHandler
+from webhook_handler import WebhookHandler
 
 load_dotenv()
 
 client = commands.Bot(command_prefix = "!", intents = discord.Intents.all())
 slash = SlashCommand(client, sync_commands = True)
-
-# webhookurl = "https://discord.com/api/webhooks/935461190715445329/Dg41vE0XVaJIGIExYpV4__WFFsU8VQv6L45jFoj2GnQYkubdJehUSeTI9ChEAH3ICiZJ/github"
 
 guild_ids = [int(os.getenv("TestServer_id"))]
 deletion_timer = float(os.getenv("Command_Deletion_Timer"))
@@ -30,9 +28,9 @@ deletion_timer = float(os.getenv("Command_Deletion_Timer"))
 async def on_ready():
     DiscordComponents(client)
     Scheduler.Setup(client)
-    github_handler = GithubHandler(client)
-    client.add_cog(github_handler)
-    client.loop.create_task(github_handler.webserver())
+    webhook_handler = WebhookHandler(client)
+    client.add_cog(webhook_handler)
+    client.loop.create_task(webhook_handler.webserver())
     print("the bot is ready")
 
 @client.event
